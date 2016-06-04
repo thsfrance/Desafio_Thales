@@ -25,7 +25,7 @@
 			</tr>
                         <tr>
 				<td colspan="2">
-                                    <input type="checkbox" name="userdata[continuar_conectado]" value="1"> 
+                                    <input type="checkbox" name="userdata[continuar_conectado]" value="1"> <label for="userdata[continuar_conectado]">Continar conectado</label>
 				</td>
 			</tr>
 		</table>

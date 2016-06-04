@@ -11,7 +11,7 @@ class ClientesController extends MainController{
         
         require ABSPATH . '/views/_includes/header.php';
         require ABSPATH . '/views/_includes/menu.php';
-        require ABSPATH . '/views/noticias/clientes-view.php';
+        require ABSPATH . '/views/clientes/clientes-view.php';
         require ABSPATH . '/views/_includes/footer.php';
     } // index
     

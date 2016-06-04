@@ -5,7 +5,7 @@
  * Manipula os dados de usuários, faz login e logout, verifica permissões e 
  * redireciona página para usuários logados.
  *
- * @package TutsupMVC
+ * @package DesafioMVC
  * @since 0.1
  */
 class UserLogin{
@@ -45,9 +45,11 @@ class UserLogin{
 	 * configura o array do usuário em $userdata
 	 */
         
-        
+        public $dData;
         
 	public function check_userlogin () {
+                $dData = date("Y-m-d H:i:s");
+            
 		// Verifica se existe uma sessão com a chave userdata
 		// Tem que ser um array e não pode ser HTTP POST
 		if ( isset( $_SESSION['userdata'] )
@@ -60,6 +62,7 @@ class UserLogin{
 			// Garante que não é HTTP POST
 			$userdata['post'] = false;
 		}
+               
 		
 		// Verifica se existe um $_POST com a chave userdata
 		// Tem que ser um array
@@ -73,7 +76,7 @@ class UserLogin{
 			// Garante que é HTTP POST
 			$userdata['post'] = true;
 		}
-
+                
 		// Verifica se existe algum dado de usuário para conferir
 		if ( ! isset( $userdata ) || ! is_array( $userdata ) ) {
 		
@@ -151,6 +154,7 @@ class UserLogin{
 		
 			return;
 		}
+                
 		$this->phpass = new PasswordHash(8, FALSE);
 		// Confere se a senha enviada pelo usuário bate com o hash do BD
 		if ( $this->phpass->CheckPassword( $user_password, $fetch['user_password'] ) ) {
@@ -165,6 +169,24 @@ class UserLogin{
 			
 				return;
 			}
+                        
+                        
+                        //Verifica data da última sessão
+                        if(!$post && !empty($fetch['user_data_session'])){
+                            $dDtSession = new DateTime($fetch['user_data_session']);
+                            $intervalo = $dDtSession->diff(new DateTime($dData));
+
+                            //Verifica se o intervalo é maior ou igual a 1 ano
+                            if($intervalo->y >= 1){
+                                $this->logged_in = false;
+                                $this->login_error = 'Session expired.';
+
+                                // Desconfigura qualquer sessão que possa existir sobre o usuário
+                                $this->logout();
+
+                                return;
+                            }
+                        }
 			
 			// Se for um post
 			if ( $post ) {
@@ -181,10 +203,14 @@ class UserLogin{
 				// Atualiza o ID da sessão
 				$_SESSION['userdata']['user_session_id'] = $session_id;
 				
+                                if(!isset($continuar_conectado)){
+                                    $session_id = "NULL";
+                                }
+                                
 				// Atualiza o ID da sessão na base de dados
 				$query = $this->db->query(
-					'UPDATE users SET user_session_id = ? WHERE user_id = ?',
-					array( $session_id, $user_id )
+					'UPDATE users SET user_session_id = ?, user_data_session = ? WHERE user_id = ?',
+					array( $session_id, $dData, $user_id)
 				);
 			}
 				

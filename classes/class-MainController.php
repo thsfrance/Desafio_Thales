@@ -7,12 +7,14 @@ class MainController extends UserLogin{
     public $login_required = false;
     public $permission_required = 'any';
     public $parametros = array();
+    public $dData;
     
     public function __construct($parametros = array()) {
         $this->db = new DesafioDB();
         $this->phppass = new PasswordHash(8,false);
         $this->parametros = $parametros;
         $this->check_userlogin();
+        $this->dData = date("Y-m-d");
     }// _construct
     
     public function load_model($model_name = false){
@@ -23,10 +25,10 @@ class MainController extends UserLogin{
             require_once $model_path;
             $model_name = explode('/',$model_name);
             $model_name = end($model_name);
-            $model_name = preg_replace('/[^a-zA-Z0-9]/is', '', $mode_name);
+            $model_name = preg_replace('/[^a-zA-Z0-9]/is', '', $model_name);
             
             if(class_exists($model_name)){
-                return new $mode_name($this->db,$this);
+                return new $model_name($this->db,$this);
             }
             return;
         }// load_model
