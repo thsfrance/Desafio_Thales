@@ -4,8 +4,8 @@
     
     <?php
     if($this->logged_in){
-        echo '<p class="alert">Logado</p>';
-    }
+      
+    } else {
     ?>
  
 	<form method="post">
@@ -23,8 +23,14 @@
 					<input type="submit" value="Enter"> 
 				</td>
 			</tr>
+                        <tr>
+				<td colspan="2">
+                                    <input type="checkbox" name="userdata[continuar_conectado]" value="1"> 
+				</td>
+			</tr>
 		</table>
 	</form>
+    <?php } ?>
 	
 </div> <!-- .wrap -->
 

@@ -25,5 +25,11 @@
 	<title><?php echo $this->title; ?></title>
 </head>
 <body>
- 
+    <div class="user">
+        <?php
+            if($this->logged_in){
+                echo '<p>Usuário: '.$this->userdata["user_name"].'</p>';
+            }
+        ?>
+    </div>
 <div class="main-page">

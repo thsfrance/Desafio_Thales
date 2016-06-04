@@ -15,6 +15,7 @@ class DesafioMVC{
     
     public function __construct() {
         $this->get_url_data();
+        
         if(! $this->controlador){
             require_once ABSPATH . '/controllers/index-controller.php';
             $this->controlador = new HomeController();

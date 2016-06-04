@@ -72,7 +72,7 @@ class DesafioDB{
         
         public function query($stmt,$data_query = null){
             $query          = $this->pdo->prepare($stmt);
-            $check_exec     = $query->execude($data_array);
+            $check_exec     = $query->execute($data_query);
             
             if($check_exec){
                 return $query;
